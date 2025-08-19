@@ -58,11 +58,6 @@ x-agent/
 │       ├── x-post-analyzer.md
 │       ├── x-system-prompt-generator.md
 │       └── x-post-creator.md
-├── agents/                     # 各エージェントの実装（オプション）
-│   ├── research_agent.py      # リサーチエージェント
-│   ├── analysis_agent.py      # 分析エージェント
-│   ├── system_prompt_agent.py # システムプロンプトエージェント
-│   └── post_creation_agent.py # 投稿作成エージェント
 ├── data/
 │   ├── past_posts/            # 過去投稿（1ファイル1投稿）
 │   ├── system_prompts/        # ジャンル別システムプロンプト
@@ -71,15 +66,11 @@ x-agent/
 │       ├── patterns/          # 抽出されたパターン
 │       ├── styles/            # スタイル分析結果
 │       └── metrics/           # パフォーマンス指標
-├── tests/                      # テストファイル
-├── config/                     # 設定ファイル
-├── utils/                      # 共通ユーティリティ
-└── docs/                       # ドキュメント・設計書
 ```
 
 ## 🔄 ワークフロー
 
-### 📝 フロー1: 文章分析・システムプロンプト生成フロー
+### 📝 フロー 1: 文章分析・システムプロンプト生成フロー
 
 ```mermaid
 graph TD
@@ -91,14 +82,15 @@ graph TD
     F1 --> G1[システムプロンプト保存]
 ```
 
-**フロー1詳細**:
+**フロー 1 詳細**:
+
 1. **過去投稿読み込み**: 保存済み投稿データの取得
 2. **文章分析実行**: 文体・構造・語彙パターンの抽出
 3. **特徴パターン化**: 再利用可能な形式への変換
 4. **プロンプト生成**: ジャンル別システムプロンプトの作成
 5. **保存・管理**: 生成されたプロンプトの永続化
 
-### 🚀 フロー2: 投稿作成フロー
+### 🚀 フロー 2: 投稿作成フロー
 
 ```mermaid
 graph TD
@@ -111,7 +103,8 @@ graph TD
     G2 --> H2[完成投稿文出力]
 ```
 
-**フロー2詳細**:
+**フロー 2 詳細**:
+
 1. **トピック受付**: ユーザーからのトピック・要件入力
 2. **リサーチ実行**: トレンド・関連情報の収集
 3. **コンテキスト分析**: トピックに最適なプロンプト判定
@@ -172,6 +165,7 @@ graph TD
 ### 基本的な使い方
 
 1. **単独エージェントの実行**
+
 ```bash
 # リサーチエージェントでトピック調査
 # Claude Code 内で Task ツールを使用
@@ -179,6 +173,7 @@ Task(subagent_type="x-research-agent", prompt="AI エージェントの最新ト
 ```
 
 2. **エージェント連携フロー**
+
 ```bash
 # Step 1: 過去投稿を分析
 Task(subagent_type="x-post-analyzer", prompt="data/past_posts/ の投稿を分析")
@@ -203,11 +198,13 @@ Task(subagent_type="x-post-creator", prompt="リサーチ結果とシステム�
 ### 推奨ワークフロー
 
 1. **初期セットアップ**
+
    - 過去投稿を `data/past_posts/` に配置
    - x-post-analyzer で分析実行
    - x-system-prompt-generator でプロンプト生成
 
 2. **日常の投稿作成**
+
    - x-research-agent でトピック調査
    - x-post-creator で投稿生成
    - 必要に応じてバリエーション作成
